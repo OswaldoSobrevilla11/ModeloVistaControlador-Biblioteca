@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Libro</title>
+    <script type="module">
+        import LibroController from "../controllers/LibroController.js";
+        import Libro from "../models/Libro.js";
+
+        async function agregarLibro() {
+            const titulo = document.getElementById("titulo").value;
+            const autor = document.getElementById("autor").value;
+            const genero = document.getElementById("genero").value;
+            const libro = new Libro(null, titulo, autor, genero, "disponible");
+
+            await LibroController.agregarLibro(libro);
+            alert("Libro agregado exitosamente!");
+        }
+    </script>
+</head>
+<body>
+    <h1>Agregar Libro</h1>
+    <form onsubmit="agregarLibro(); return false;">
+        <input type="text" id="titulo" placeholder="Título" required>
+        <input type="text" id="autor" placeholder="Autor" required>
+        <input type="text" id="genero" placeholder="Género" required>
+        <button type="submit">Agregar</button>
+    </form>
+</body>
+</html>

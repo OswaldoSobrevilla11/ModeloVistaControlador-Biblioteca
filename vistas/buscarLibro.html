@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Libros</title>
+    <script type="module">
+        import LibroController from "../controllers/LibroController.js";
+
+        async function buscarLibros() {
+            const campo = document.getElementById("campo").value;
+            const valor = document.getElementById("valor").value.trim();
+
+            const resultados = valor ? await LibroController.buscarLibros(campo, valor) : await LibroController.listarLibros();
+
+            const contenedor = document.getElementById("resultados");
+            contenedor.innerHTML = "";
+
+            if (resultados.length > 0) {
+                resultados.forEach(libro => {
+                    const libroDiv = document.createElement("div");
+                    libroDiv.className = "libro";
+                    libroDiv.innerHTML = `
+                        <h3>${libro.titulo}</h3>
+                        <p>Autor: ${libro.autor}</p>
+                        <p>Género: ${libro.genero}</p>
+                        <p>Estado: ${libro.estado}</p>
+                    `;
+                    contenedor.appendChild(libroDiv);
+                });
+            } else {
+                contenedor.innerHTML = "<p>No se encontraron libros.</p>";
+            }
+        }
+
+        document.getElementById("formBuscar").addEventListener("submit", event => {
+            event.preventDefault();
+            buscarLibros();
+        });
+
+        document.addEventListener("DOMContentLoaded", buscarLibros);
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Buscar Libros</h1>
+    </header>
+
+    <main>
+        <form id="formBuscar">
+            <label for="campo">Buscar por:</label>
+            <select id="campo" required>
+                <option value="titulo">Título</option>
+                <option value="autor">Autor</option>
+                <option value="genero">Género</option>
+            </select>
+            <input type="text" id="valor" placeholder="Escribe el valor a buscar...">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <section id="resultados">
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sistema de Gestión Bibliotecaria</p>
+    </footer>
+</body>
+</html>
